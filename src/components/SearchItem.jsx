@@ -3,6 +3,8 @@ const SearchItem = ({ search, setSearch }) => {
         <form className="searchForm" onSubmit={(e) => e.preventDefault()}>
             <label htmlFor="search">Search</label>
             <input
+                autoFocus
+                autoComplete="off"
                 type="text"
                 id="search"
                 role="searchbox"
