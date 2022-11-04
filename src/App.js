@@ -2,17 +2,20 @@ import "./index.css";
 import { useState } from "react";
 // import { defaultItems } from "./data";
 import Header from "./components/Header";
-import SearchItem from "./components/SearchItem";
 import AddItem from "./components/AddItem";
+import SearchItem from "./components/SearchItem";
 import Content from "./components/Content";
 import Footer from "./components/Footer";
 
 const App = () => {
+    // States
     const [items, setItems] = useState(
         JSON.parse(localStorage.getItem("groceryItems"))
     );
     const [newItem, setNewItem] = useState("");
+    const [search, setSearch] = useState("");
 
+    // Functions
     const setAndSaveItems = (newItems) => {
         setItems(newItems);
         localStorage.setItem("groceryItems", JSON.stringify(newItems));
@@ -25,6 +28,7 @@ const App = () => {
         setAndSaveItems(listItems);
     };
 
+    // Event Handler Functions
     const handleCheck = (id) => {
         const listItems = items.map((item) =>
             item.id === id ? { ...item, checked: !item.checked } : item
@@ -47,12 +51,12 @@ const App = () => {
     return (
         <div className="App">
             <Header title="Mom's Grocery" />
-            <SearchItem />
             <AddItem
                 newItem={newItem}
                 setNewItem={setNewItem}
                 handleSubmit={handleSubmit}
             />
+            <SearchItem search={search} setSearch={setSearch} />
             <Content
                 items={items}
                 handleCheck={handleCheck}
