@@ -1,5 +1,5 @@
 import "./index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { defaultItems } from "./data";
 import Header from "./components/Header";
 import AddItem from "./components/AddItem";
@@ -10,22 +10,21 @@ import Footer from "./components/Footer";
 const App = () => {
     // States
     const [items, setItems] = useState(
-        JSON.parse(localStorage.getItem("groceryItems"))
+        JSON.parse(localStorage.getItem("groceryItems")) || []
     );
     const [newItem, setNewItem] = useState("");
     const [search, setSearch] = useState("");
 
-    // Functions
-    const setAndSaveItems = (newItems) => {
-        setItems(newItems);
-        localStorage.setItem("groceryItems", JSON.stringify(newItems));
-    };
+    useEffect(() => {
+        localStorage.setItem("groceryItems", JSON.stringify(items));
+    }, [items]);
 
+    // Functions
     const addItem = (item) => {
         const id = items.length ? items[items.length - 1].id + 1 : 1;
         const myNewItem = { id, checked: false, item };
         const listItems = [...items, myNewItem];
-        setAndSaveItems(listItems);
+        setItems(listItems);
     };
 
     // Event Handler Functions
@@ -33,12 +32,12 @@ const App = () => {
         const listItems = items.map((item) =>
             item.id === id ? { ...item, checked: !item.checked } : item
         );
-        setAndSaveItems(listItems);
+        setItems(listItems);
     };
 
     const handleDelete = (id) => {
         const listItems = items.filter((item) => item.id !== id);
-        setAndSaveItems(listItems);
+        setItems(listItems);
     };
 
     const handleSubmit = (e) => {
